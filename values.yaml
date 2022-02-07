@@ -15,6 +15,9 @@ containerPort: 8080
 envVars:
   CUSTOME_ENV_VAR1: "env var1"
   CUSTOME_ENV_VAR2: "env var2"
+  CUSTOME_ENV_VAR3: "env var3"
+  CUSTOME_ENV_VAR4: "env var4"
+  CUSTOME_ENV_VAR5: "env var5"
   # pass more env vars here in the format: key: value
 
 post_install:
