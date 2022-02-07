@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: echo-post-install
+  labels:
+    {{- include "echoserver.labels" . | nindent 4 }}
+template:
+    metadata:
+      name: post-install-pod
+    spec:
+      containers:
+      # [start of curl container]
+      - name: echo
+        image: pstauffer/curl:latest
+        imagePullPolicy: IfNotPresent
+
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          sleep {{ .Values.post_install.delay }}
+          # The link format is: <service-name>.<namespace>.svc.cluster.local:<service-port>/content
+          curl -F "message= {{ .Values.post_install.message}}" service-name.default.svc.cluster.local:8888/content
+      restartPolicy: OnFailure
+      # [end of curl container]

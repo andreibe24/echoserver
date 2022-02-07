@@ -38,42 +38,46 @@ spec:
               containerPort: {{ .Values.containerPort }}
               protocol: TCP
           env:
-          # Kubernetes unnecessarily requiring quoting on numeric env vars #82296 
-          - name: PORT
-            value: {{ .Values.containerPort | quote }}
-          - name: CUSTOME_ENV_VAR01
-            value: "env var 01"
-          - name: CUSTOME_ENV_VAR02
-            value: "env var 02"
-          {{- range $key, $value := .Values.envVars }}
-          - name: {{ $key }}
-            value: {{ $value | quote }}
-          {{- end }}  
-          # exposing pod info as env variables using k8s downward API for demo purposes
-          # https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          - name: POD_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.podIP
-          - name: POD_NODE_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: spec.nodeName
-          # exposing Helm info as env variables for demo purposes
-          - name: HELM_CHART_NAME
-            value: {{ .Chart.Name }} 
-          - name: HELM_CHART_VERSION
-            value: {{ .Chart.Version | quote }}
-          - name: HELM_RELEASE
-            value: {{ .Release.Name }}
+            # Kubernetes unnecessarily requiring quoting on numeric env vars #82296 
+            - name: PORT
+              value: {{ .Values.containerPort | quote }}
+            - name: CUSTOME_ENV_VAR01
+              value: "env var 01"
+            - name: CUSTOME_ENV_VAR02
+              value: "env var 02"
+            {{- range $key, $value := .Values.envVars }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            #{{- with .Values.ingress.annotations }}
+            #annotations:
+            #{{- toYaml . | nindent 4 }}
+            #{{- end }}  
+            # exposing pod info as env variables using k8s downward API for demo purposes
+            # https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            # exposing Helm info as env variables for demo purposes
+            - name: HELM_CHART_NAME
+              value: {{ .Chart.Name }} 
+            - name: HELM_CHART_VERSION
+              value: {{ .Chart.Version | quote }}
+            - name: HELM_RELEASE
+              value: {{ .Release.Name }}
           livenessProbe:
             httpGet:
               path: /
