@@ -9,9 +9,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+      targetPort: {{ .Values.containerPort }}
+      protocol: {{ .Values.service.protocol }}
+      name: helm-echoserver-main
   selector:
     {{- include "echoserver.selectorLabels" . | nindent 4 }}
 {{- end}}
