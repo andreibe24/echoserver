@@ -1,0 +1,14 @@
+apiVersion: v2
+name: echoserver
+description: Do a echoserver container along with a post-installation task
+type: application
+version: 1.0.0
+keywords:
+  - first proj
+sources:
+  - https://github.com/crocoman31/helm-git-repo.git
+icon: https://www.seekpng.com/png/full/114-1149126_apple-clipart-black-and-white-image-small-clip.png
+maintainers:
+  - name: Andrei B
+    email: andreib@yahoo.com
+appVersion: "1.16.0"
